@@ -1,8 +1,0 @@
-altair
-pandas
-streamlit
-numpy
-xgboost
-sklearn
-msilib
-PIL
