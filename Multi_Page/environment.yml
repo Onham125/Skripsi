@@ -1,10 +1,11 @@
-name: streamlit
+name: Skripsi
 channels:
   - defaults
 dependencies:
-  - python=3.10
-  - py-xgboost
-  - plotly
-  - seaborn==0.11.1
-  - matplotlib==3.3.4
-  - pandas==1.2.3
+  - python
+  - pandas
+  - scikit-learn
+  - streamlit
+  - xgboost
+  - numpy
+prefix: D:\Annaconda\envs\Skripsi
