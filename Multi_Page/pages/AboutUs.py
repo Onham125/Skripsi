@@ -1,4 +1,4 @@
-from msilib.schema import Feature
+
 from PIL import Image
 import streamlit as st
 
