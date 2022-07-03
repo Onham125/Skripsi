@@ -7,4 +7,5 @@ dependencies:
   - scikit-learn
   - xgboost
   - numpy
+  - streamlit==1.1.0
 prefix: D:\Annaconda\envs\Skripsi
