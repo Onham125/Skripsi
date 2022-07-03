@@ -5,7 +5,7 @@ import streamlit as st
 
 st.header('About Us :')
 st.markdown('We are Bina Nusantara College Student that aware of the Chronic Kidney Diseases and we also realize that in this day and age where technology is developing rapidly and technology has also been widely used for various types of science where technology can help in our daily activities. Technology is also helping in the healthcare sector where healthcare workers are greatly aided by the technology that helps them, but most people do not understand or lack knowledge about the symptoms of the disease chronic kidney disease.')
-image = Image.open('pages\gambar.jpeg')
+image = Image.open('gambar.jpeg')
 st.image(image, caption='Kidney')
 
 
