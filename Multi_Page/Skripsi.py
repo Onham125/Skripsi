@@ -36,7 +36,7 @@ Potassium =st.sidebar.number_input('Potassium',min_value=0.00)
 
 
 
-
+#untuk user input parameter yang boolean
 if Red_Blood_Cells == 'Normal':
     Red_Blood_Cells= 1
 else :
@@ -101,12 +101,13 @@ dfasli = pd.read_csv('CKD_KNNFull1.csv')
 
 #df1 = pd.read_csv('data chornic train 70persen.csv')
 #df2 = pd.read_csv('data chornic test 30persen.csv')
-dfKNNTrain = pd.read_csv('CKD_KNN14train.csv')
-dfKNNTest = pd.read_csv('CKD_KNN14test.csv')
+dfKNNTrain = pd.read_csv('KNNtrain98XGBOOST.csv')
+dfKNNTest = pd.read_csv('KNNtest98XGBOOST.csv')
 #df_median70 = pd.read_csv('data chornic train 70persen handling missing value pakai median.csv')
 #df_median30 = pd.read_csv('data chornic test 30persen handling missing value pakai median.csv');
 dftest =dfasli.iloc[:,:-1]
 
+## menggunakan concat untuk menambahkan user input parameter ke df yang missing value nya diisi dengan knnimputer dan setelah itu di normalize
 test =pd.concat([dftest,data2],ignore_index=True)
 test.reset_index()
 df5 = pd.DataFrame(test,columns=dftest.columns)
@@ -123,13 +124,13 @@ testing
 #X_30 = df2.iloc[:,:-1] #
 #Y_30 = df2.iloc[:,-1] 
 
-Df_train = dfKNNTrain.iloc[:,:-1]
-Df_test = dfKNNTest.iloc[:,-1]
+#Df_train = dfKNNTrain.iloc[:,:-1]
+#Df_test = dfKNNTest.iloc[:,-1]
 
-X_70 = dfKNNTrain.iloc[:,:-1]# Using all column except for the last column as X
-Y_70 = dfKNNTrain.iloc[:,-1]# Selecting the last column as Y
-X_30 =dfKNNTest.iloc[:,:-1]
-Y_30 = dfKNNTest.iloc[:,-1]
+X_70 = dfKNNTrain.iloc[:,:-1]# Mengambil semua column kecuali label 
+Y_70 = dfKNNTrain.iloc[:,-1]# mengambil hanya column label 
+X_30 =dfKNNTest.iloc[:,:-1]# Mengambil semua column kecuali label 
+Y_30 = dfKNNTest.iloc[:,-1]# mengambil hanya column label 
 
 #X = df1.iloc[:,:-1] # Using all column except for the last column as X
 #Y = df1.iloc[:,-1] # Selecting the last column as Y
@@ -151,7 +152,15 @@ Y_30 = dfKNNTest.iloc[:,-1]
   #                         leaf_size=30,
  #                          p=2,
  #                          metric='minkowski',metric_params=None,n_jobs=None)
-xgb_cl = xgb.XGBClassifier(objective='binary:logistic')
+
+xgb_cl = xgb.XGBClassifier(base_score=0.5, booster='gbtree', colsample_bylevel=1,
+              colsample_bynode=1, colsample_bytree=0.3, gamma=0.2, gpu_id=-1,
+              importance_type='gain', interaction_constraints='', learning_rate=0.300000012, max_delta_step=0,
+              max_depth=5, min_child_weight=1,
+              monotone_constraints='()', n_estimators=100, n_jobs=8,
+              num_parallel_tree=1, random_state=0, reg_alpha=0, reg_lambda=1,
+              scale_pos_weight=1, subsample=1, tree_method='exact',
+              validate_parameters=1, verbosity=None)
 xgb_cl = xgb_cl.fit(X_70,Y_70)
 xgbpred = xgb_cl.predict(testing)
 
@@ -263,6 +272,9 @@ xgbpred = xgb_cl.predict(testing)
 
 
 #st.subheader('Prediction XGBoost')
+
+
+## Mengambil hasil prediksi dari predict_proba
 predCKDXGB = xgb_cl.predict_proba(testing)[:,0]
 prednonCKDXGB = xgb_cl.predict_proba(testing)[:,1]
 if predCKDXGB>prednonCKDXGB:
@@ -286,7 +298,7 @@ if  prednonCKDXGB> predCKDXGB:
 #else:
   #  hasil_mean = 'Not CKD'
 
-st.header('Prediction Result:')
+st.header('Predictions Result:')
 st.subheader(hasilXGB)
 
 
